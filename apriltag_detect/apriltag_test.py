@@ -33,6 +33,15 @@ while (cam.isOpened()):
 
 """
 
+distance = 0
+rotation = 0
+#translation in x and y are from center. upper left: (-,-), upper right: (+,-)
+# lower right: (+,+), lower left: (-,+)
+translation_x = [2,0]
+translation_y = [3,1]
+translation_z = [3,2]
+
+tag_size = 0.146 #tag size in meters
 
 frame_size = 1280, 800
 
@@ -55,7 +64,7 @@ def point_to_coordinate(frame=array, points=array):
     point_2_xy = x, y
 
     return point_2_xy
-
+translation_x
 
 cam = cv2.VideoCapture(0)
 
@@ -79,7 +88,7 @@ while(cam.isOpened):
         print("Apriltag detected")
 
         #detect pose of the tag
-        pose = detector.detection_pose(results[0], cam_params, 0.2)
+        pose = detector.detection_pose(results[0], cam_params, tag_size)
         
         #getting information from the detection. 
         #possible outputs: center, corner, tag_family, tag_id, 
@@ -102,12 +111,12 @@ while(cam.isOpened):
 
         print("camera matrix:")
         print(mtx[0,0])"""
-        print(pose)
+        print(pose[0])
 
 
 
 
-    k = cv2.waitKey(1)
+    k = cv2.waitKey(1500)
     if k%256 == 27:
         # ESC pressed
         print("Escape hit, closing...")
