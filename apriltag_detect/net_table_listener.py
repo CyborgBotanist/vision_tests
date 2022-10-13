@@ -8,6 +8,7 @@
 # table.
 #
 
+import numpy as np
 import sys
 import time
 from networktables import NetworkTables
@@ -17,13 +18,11 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-if len(sys.argv) != 2:
-    print("Error: specify an IP to connect to!")
-    exit(0)
-
 ip = "127.0.0.1"
 
-NetworkTables.initialize(server=ip)
+A = np.zeros( (4,4) )
+
+NetworkTables.initialize(server='127.0.0.2')
 
 
 def valueChanged(table, key, value, isNew):
@@ -38,6 +37,9 @@ NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
 
 sd = NetworkTables.getTable("SmartDashboard")
 sd.addEntryListener(valueChanged)
+table = NetworkTables.getTable("ArrayVals")
 
 while True:
-    time.sleep(1)
+    table.putNumber("Array1", A[3,3])
+    print(table.getNumber("Array1", 10))
+    time.sleep(3)
